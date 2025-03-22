@@ -1,12 +1,20 @@
-exports.handler = async (event, context) => {
-  const webhookData = JSON.parse(event.body);
+exports.handler = async function(event) {
+  try {
+    const data = JSON.parse(event.body);
 
-  console.log("✅ RealtorGPT Webhook Data:", webhookData);
+    // log received data for debugging
+    console.log("Received data:", data);
 
-  // You can later customize what happens here with the data
-  
-  return {
-    statusCode: 200,
-    body: JSON.stringify({ status: "success" }),
-  };
+    return {
+      statusCode: 200,
+      body: JSON.stringify({ message: "Webhook received successfully", receivedData: data })
+    };
+  } catch (error) {
+    console.error("❌ Error processing webhook:", error);
+
+    return {
+      statusCode: 400,
+      body: JSON.stringify({ error: "Webhook error: " + error.message })
+    };
+  }
 };
